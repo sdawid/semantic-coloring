@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+<style>
+ul {
+    list-style-type: none;
+}
+
+body {
+    background-color: #111;
+    color: #888;
+}
+
+ul li span {
+    margin-right: 10px;
+}
+
+.cbox {
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: white;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 1px 10px 0 0;
+}
+</style>
+</head>
+<body>
+<div id="colors-definitions">
+</div>
+<script type="text/javascript">
+let colors = {
+    // 0 1 2 3 4 5 6 7 8 9 A B C D E F
+    //     2       6       A       E
+    'Colors': {
+        '.': ['#222', 'bold'],
+        '..': ['#666', 'bold'],
+        '...': ['#AAA', 'bold'],
+        '....': ['#EEE', 'bold'],
+    },
+    'Types': {
+        'Interface': ['#E26', 'italic'],
+        'Abstract class': ['#E2E', 'italic'],
+        'Class': '#E2E',
+        'Enum': ['#A26', 'bold'],
+        'Type parameter': ['#62A', 'bold']
+    },
+    'Method Like': {
+        'Annotation': '#66E',
+        'Anonymous class': '#26E',
+        'Constructor': '#26E',
+        'Constructor declaration': ['#6AE', 'bold']
+    },
+    'Methods': {
+        'Static Method': ['#2EE', 'italic'],
+        'Abstract': '#2EE',
+        'Method': '#2AE',
+        'Inherited': '#6AE',
+        'Method declaration': ['#6EE', 'bold']
+    },
+    'Variables': {
+        'Class final field': ['#EE2', 'italic'],
+        'Class field': '#EE2',
+        'Instance final field': ['#AE2', 'italic'],
+        'Instance field': '#AE2',
+        'Lambda parameter': '#2E6',
+        'Parameter': '#2E6',
+        'Parameter (reassigned)': ['#2E6', 'bold'],
+        'Annotation attribute': '#2EA',
+        'Local variable': '#2A2',
+        'Local variable (reassigned)': ['#2A2', 'bold']
+    },
+    'Literals': {
+        'Number': '#E62',
+        'String': '#EA2',
+        'String Escape Sequence': '#E62',
+        'String Invalid Sequence': '#E22'
+    },
+    'Misc': {
+        'Background': '#111',
+        'Text/Keywords/Symbols': '#AAA',
+        'Comments': '#AAA',
+        'Comments Markup': ['#666', 'bold'],
+        'Comments Tag': ['#AAA', 'bold']
+    }
+};
+
+function createGroup(groupName, items) {
+    let domList = document.createElement('ul');
+    domList.appendChild(document.createTextNode(group));
+    for (item in items) {
+        let attributes = items[item];
+        domList.appendChild(createItem(item, attributes));
+    }
+    return domList;
+}
+
+function createItem(itemName, attributes) {
+    var color, italic, bold;
+    if (attributes instanceof Array) {
+        color = attributes[0];
+        if (attributes[1] == 'italic') {
+            italic = true;
+        }
+        if (attributes[1] == 'bold') {
+            bold = true;
+        }
+    } else {
+        color = attributes;
+    }
+    
+    let domItem = document.createElement('li');
+    let domBox = document.createElement('div');
+    domBox.appendChild(document.createTextNode(color));
+    domBox.setAttribute('class', 'cbox');
+    domBox.setAttribute('style', 'background-color: ' + color);
+    domItem.appendChild(domBox);
+
+    let domText = document.createElement('span');
+    if (italic) {
+        domText.appendChild(document.createTextNode('Italic'));
+    } else if (bold) {
+        domText.appendChild(document.createTextNode('Bold'));
+    } else {
+        domText.appendChild(document.createTextNode('Text'));
+    }
+    domText.setAttribute(
+            'style',
+            'color: ' + color + ';'
+                + (italic ? 'font-style: italic;' : '')
+                + (bold ? 'font-weight: bold;' : '')
+    );
+    domItem.appendChild(domText);
+    domItem.appendChild(document.createTextNode(item));
+    return domItem;
+}
+
+let domPage = document.getElementById('colors-definitions');
+for (group in colors) {
+    domPage.appendChild(createGroup(group, colors[group]));
+}
+
+</script>
+</body>
+</html>
+
